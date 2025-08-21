@@ -1,91 +1,133 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import KanbanColumn from "../Tasks/KanbanColumn";
 
-const statuses = ["todo", "inprogress", "done"];
+const STATUSES = ["todo", "inprogress", "done"];
+const PRIORITIES = ["Low", "Medium", "High"];
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [project, setProject] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+    const allProjects = JSON.parse(localStorage.getItem("projectData")) || [];
+    const selectedProject = allProjects.find((proj) => proj.createdAt === id);
+    setProject(selectedProject);
+
     const storedTasks = JSON.parse(localStorage.getItem(`tasks-${id}`)) || [];
     setTasks(storedTasks);
+
+    const allUsers = JSON.parse(localStorage.getItem("userData")) || [];
+    setUsers(allUsers);
+
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+    setCurrentUser(loginUser);
   }, [id]);
 
+  const saveTasks = (updatedTasks) => {
+    setTasks(updatedTasks);
+    localStorage.setItem(`tasks-${id}`, JSON.stringify(updatedTasks));
+  };
+
+  const addTask = (status) => {
+    const taskContent = prompt("Enter task title:");
+    if (!taskContent) return;
+
+    const taskDescription = prompt("Enter task description (optional):") || "";
+
+    const newTask = {
+      id: Date.now(),
+      content: taskContent,
+      description: taskDescription,
+      status,
+      createdAt: new Date().toISOString(),
+      assignedTo: "",
+      priority: "Medium",
+      dueDate: "",
+      projectId: id,
+    };
+
+    const updated = [...tasks, newTask];
+    saveTasks(updated);
+  };
+
   const moveTask = (taskId, direction) => {
-    const updated = tasks.map((task) => {
+    const indexMap = {
+      todo: 0,
+      inprogress: 1,
+      done: 2,
+    };
+
+    const updatedTasks = tasks.map((task) => {
       if (task.id === taskId) {
-        const currentIndex = statuses.indexOf(task.status);
+        const currentIndex = indexMap[task.status];
         const newIndex = currentIndex + direction;
-        if (newIndex >= 0 && newIndex < statuses.length) {
-          return { ...task, status: statuses[newIndex] };
+        const newStatus = STATUSES[newIndex];
+        if (newStatus) {
+          return { ...task, status: newStatus };
         }
       }
       return task;
     });
-    setTasks(updated);
-    localStorage.setItem(`tasks-${id}`, JSON.stringify(updated));
+
+    saveTasks(updatedTasks);
   };
 
-  const addTask = (status) => {
-    const content = prompt(`Enter task for ${status.toUpperCase()}:`);
-    if (!content) return;
-    const newTask = {
-      id: Date.now().toString(),
-      content,
-      status,
-    };
-    const updated = [...tasks, newTask];
-    setTasks(updated);
-    localStorage.setItem(`tasks-${id}`, JSON.stringify(updated));
+  const editTask = (taskId, updates) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId ? { ...task, ...updates } : task
+    );
+    saveTasks(updatedTasks);
+  };
+
+  const deleteTask = (taskId) => {
+    const updatedTasks = tasks.filter((task) => task.id !== taskId);
+    saveTasks(updatedTasks);
+  };
+
+  const assignUser = (taskId, username) => {
+    editTask(taskId, { assignedTo: username });
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Kanban Board</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">
+          Project: {project?.name || "Untitled"}
+        </h2>
 
-      <div className="grid grid-cols-3 gap-4">
-        {statuses.map((status) => (
-          <div key={status} className="bg-gray-100 rounded p-4 min-h-[200px]">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold capitalize">
-                {status.replace("inprogress", "In Progress")}
-              </h3>
-              <button
-                onClick={() => addTask(status)}
-                className="text-sm bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
-              >
-                + Create
-              </button>
-            </div>
+        <select className="border px-3 py-2 rounded" defaultValue="">
+          <option disabled value="">
+            👥 People
+          </option>
+          {users
+            .filter((user) => user.username !== currentUser?.username)
+            .map((user, index) => (
+              <option key={index} value={user.username}>
+                {user.username}
+              </option>
+            ))}
+        </select>
+      </div>
 
-            {tasks
-              .filter((t) => t.status === status)
-              .map((task) => (
-                <div
-                  key={task.id}
-                  className="bg-white p-3 mb-3 rounded shadow"
-                >
-                  <p>{task.content}</p>
-                  <div className="mt-2 flex justify-between">
-                    <button
-                      onClick={() => moveTask(task.id, -1)}
-                      disabled={status === "todo"}
-                      className="text-sm px-2 py-1 bg-gray-300 rounded disabled:opacity-40"
-                    >
-                      ←
-                    </button>
-                    <button
-                      onClick={() => moveTask(task.id, 1)}
-                      disabled={status === "done"}
-                      className="text-sm px-2 py-1 bg-gray-300 rounded disabled:opacity-40"
-                    >
-                      →
-                    </button>
-                  </div>
-                </div>
-              ))}
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {STATUSES.map((status) => (
+          <KanbanColumn
+            key={status}
+            status={status}
+            tasks={tasks.filter((task) => task.status === status)}
+            addTask={addTask}
+            moveTask={moveTask}
+            editTask={editTask}
+            deleteTask={deleteTask}
+            assignUser={assignUser}
+            users={users}
+            currentUser={currentUser}
+            priorities={PRIORITIES}
+          />
         ))}
       </div>
     </div>

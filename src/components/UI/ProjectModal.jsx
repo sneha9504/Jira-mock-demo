@@ -18,6 +18,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(project);
+    
     onClose(); // Close the modal
   };
 
@@ -81,6 +82,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit }) => {
       </div>
     </div>,
     document.getElementById("modal-root")
+    
   );
 };
 
