@@ -127,7 +127,10 @@ const TaskCard = ({
           Edit
         </button>
         <button
-          onClick={() => deleteTask(task.id)}
+          onClick={() => {
+            const confirmed = window.confirm("Are you sure you want to delete this task?");
+            if (confirmed) deleteTask(task.id);
+          }}
           className="text-sm px-2 py-1 rounded"
           style={{ backgroundColor: 'var(--color-warning)', color: '#ffffff' }}
         >

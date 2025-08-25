@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import KanbanColumn from "../Tasks/KanbanColumn";
+import useNotificationStore from "../../store/NotificationStore"; 
 
-const STATUSES = ["todo", "inprogress", "done"];
 const PRIORITIES = ["Low", "Medium", "High"];
 
 const ProjectDetails = () => {
@@ -11,6 +11,8 @@ const ProjectDetails = () => {
   const [project, setProject] = useState(null);
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [columns, setColumns] = useState([]);
+  const { showNotification } = useNotificationStore.getState();
 
   useEffect(() => {
     const allProjects = JSON.parse(localStorage.getItem("projectData")) || [];
@@ -25,11 +27,21 @@ const ProjectDetails = () => {
 
     const loginUser = JSON.parse(localStorage.getItem("loginUser"));
     setCurrentUser(loginUser);
+
+    const storedColumns =
+      JSON.parse(localStorage.getItem(`columns-${id}`)) ||
+      ["todo", "inprogress", "done"];
+    setColumns(storedColumns);
   }, [id]);
 
   const saveTasks = (updatedTasks) => {
     setTasks(updatedTasks);
     localStorage.setItem(`tasks-${id}`, JSON.stringify(updatedTasks));
+  };
+
+  const saveColumns = (updatedColumns) => {
+    setColumns(updatedColumns);
+    localStorage.setItem(`columns-${id}`, JSON.stringify(updatedColumns));
   };
 
   const addTask = (status) => {
@@ -55,17 +67,16 @@ const ProjectDetails = () => {
   };
 
   const moveTask = (taskId, direction) => {
-    const indexMap = {
-      todo: 0,
-      inprogress: 1,
-      done: 2,
-    };
+    const indexMap = columns.reduce((acc, status, index) => {
+      acc[status] = index;
+      return acc;
+    }, {});
 
     const updatedTasks = tasks.map((task) => {
       if (task.id === taskId) {
         const currentIndex = indexMap[task.status];
         const newIndex = currentIndex + direction;
-        const newStatus = STATUSES[newIndex];
+        const newStatus = columns[newIndex];
         if (newStatus) {
           return { ...task, status: newStatus };
         }
@@ -92,12 +103,35 @@ const ProjectDetails = () => {
     editTask(taskId, { assignedTo: username });
   };
 
+  const addColumn = () => {
+    const newColumn = prompt("Enter new column name:");
+    if (!newColumn) return;
+
+    const columnId = newColumn.toLowerCase().replace(/\s+/g, "-");
+    if (columns.includes(columnId)) {
+      showNotification("Column already exists", "error");
+      return;
+    }
+
+    const updatedColumns = [...columns, columnId];
+    saveColumns(updatedColumns);
+  };
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">
-          Project: {project?.name || "Untitled"}
-        </h2>
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold">
+            Project: {project?.name || "Untitled"}
+          </h2>
+
+          <button
+            onClick={addColumn}
+            className="bg-blue-500 text-white px-3 py-2 rounded"
+          >
+            ➕ Add Column
+          </button>
+        </div>
 
         <select className="border px-3 py-2 rounded" defaultValue="">
           <option disabled value="">
@@ -114,7 +148,7 @@ const ProjectDetails = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {STATUSES.map((status) => (
+        {columns.map((status) => (
           <KanbanColumn
             key={status}
             status={status}

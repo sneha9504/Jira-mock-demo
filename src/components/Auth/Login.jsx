@@ -2,14 +2,25 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
+import useNotificationStore from "../../store/NotificationStore";
+
+// Inside your function (e.g., after assigning a task)
+
+
+
 // Login Form Schema
 const loginSchema = yup.object({
   username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
 });
 
+const { showNotification } = useNotificationStore.getState();
 const LoginForm = ({ switchToSignup }) => {
+      const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -32,7 +43,7 @@ const LoginForm = ({ switchToSignup }) => {
         );
         console.log(users);
         if (users) {
-          alert("Login Successful");
+         showNotification("Login Successfully", "success");
           localStorage.setItem("isAuthenticated", "true");
           localStorage.setItem(
             "user",
@@ -40,13 +51,21 @@ const LoginForm = ({ switchToSignup }) => {
           );
           Navigate("/Dashboard", { replace: true });
         } else {
-          alert("Invalid credentials");
+          showNotification("Invalid Credentials", "error");
         }
       });
     } else {
-      alert("user not available");
+      showNotification("No users found, please sign up", "error");
+      return;
     }
+    e.preventDefault();
+
+    console.log("Login Data:", data);
+    
+  
   };
+
+ 
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-8">
@@ -102,6 +121,7 @@ const LoginForm = ({ switchToSignup }) => {
           </button>
         </div>
       </form>
+       
     </div>
   );
 };

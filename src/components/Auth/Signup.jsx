@@ -1,6 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import useNotificationStore from "../../store/NotificationStore";
+
 // Signup Form Schema
 const signupSchema = yup.object({
   username: yup.string().required("Username is required"),
@@ -22,6 +24,7 @@ const signupSchema = yup.object({
 });
 
 const SignupForm = ({ switchToLogin }) => {
+  const { showNotification } = useNotificationStore.getState();
   const {
     register,
     handleSubmit,
@@ -41,15 +44,19 @@ const SignupForm = ({ switchToLogin }) => {
     };
     console.log("Signup Data:", userDetails);
     console.log(getUserData);
+    
+
     //added feature to check if user exist or not
     if (
       getUserData.some(
         (u) =>
           u.username === data.username ||
           u.email === data.email
+         
       )
+      
     ) {
-      alert("User already exists");
+      showNotification("user already exits", "error");
       return;
     }
 
