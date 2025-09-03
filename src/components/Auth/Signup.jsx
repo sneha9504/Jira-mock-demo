@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
+import useNotificationStore from "../../store/notificationStore";
 
 
 // Signup Form Schema
@@ -25,7 +25,7 @@ const signupSchema = yup.object({
 });
 
 const SignupForm = ({ switchToLogin }) => {
-  
+  const { showNotification } = useNotificationStore();
   const {
     register,
     handleSubmit,
@@ -44,6 +44,7 @@ const SignupForm = ({ switchToLogin }) => {
       id: uniquieId.getTime(),
     };
     console.log("Signup Data:", userDetails);
+    showNotification("Signup successful! Please login.", "success");
     console.log(getUserData);
     
 
@@ -57,7 +58,8 @@ const SignupForm = ({ switchToLogin }) => {
       )
       
     ) {
-      console.log("User already exists");
+      showNotification("User already exists", "error");
+      return;
 
     }
 

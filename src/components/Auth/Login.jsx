@@ -12,13 +12,13 @@ const loginSchema = yup.object({
   password: yup.string().required("Password is required"),
 });
 
-const { showNotification } = useNotificationStore.getState();
+
 
 const Login = ({ switchToSignup }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalTitle, setModalTitle] = useState("");
-
+  const { showNotification } = useNotificationStore();
   const {
     register,
     handleSubmit,
@@ -44,11 +44,12 @@ const Login = ({ switchToSignup }) => {
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("user", JSON.stringify(user));
         navigate("/Dashboard", { replace: true });
+        showNotification("Login successful!", "success");
       } else {
         showNotification("Invalid username or password", "error");
       }
     } else {
-     console.log("No users found. Please sign up first.");
+      showNotification("No users found. Please sign up first.", "error");
     }
   };
 

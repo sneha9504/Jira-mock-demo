@@ -118,7 +118,7 @@ const KanbanTask = ({
       {userRole === "admin" && !isEditing && (
         <div className="mt-3 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <button onClick={() => setShowAssign(!showAssign)} className="px-3 py-1.5 text-xs bg-indigo-600 text-white rounded-md">Assign</button>
-          <button onClick={() => setIsEditing(true)} className="px-3 py-1.5 text-xs bg-blue-500 text-white rounded-md">Edit</button>
+          <button onClick={() => setIsEditing(true)} className="px-3 py-1.5 text-xs bg-orange-400 text-white rounded-md">Edit</button>
           <button
             onClick={() => window.confirm("Delete task?") && handleDelete()}
             className="px-3 py-1.5 text-xs bg-red-500 text-white rounded-md"
