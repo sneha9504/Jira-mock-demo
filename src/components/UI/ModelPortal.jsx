@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 // Schema for validation
 const schema = yup.object().shape({
@@ -11,6 +12,7 @@ const schema = yup.object().shape({
 });
 
 const ModelPortal = ({ onClose }) => {
+  const navigate = useNavigate();
   // Hook-form setup
   const {
     register,
@@ -49,8 +51,8 @@ const ModelPortal = ({ onClose }) => {
 
     // ✅ Refresh page after saving
     setTimeout(() => {
-      window.location.reload();
-    }, 300); // Small delay for smooth close
+      navigate(0); // Navigate to same page
+    }, 300);// Small delay for smooth close
   };
 
   return ReactDOM.createPortal(
