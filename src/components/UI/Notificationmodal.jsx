@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useNotificationStore from '../../store/NotificationStore';
+import useNotificationStore from '../../store/notificationStore';
 
 const NotificationModal = () => {
   const { isOpen, message, type, hideNotification } = useNotificationStore();

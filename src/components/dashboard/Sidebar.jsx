@@ -18,32 +18,29 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className=" bg-surface text-text border-r border-border h-full">
-      <div className="p-6 border-b border-border">
-        <h2 className="text-lg font-semibold">
-          Navigation Panel
-        </h2>
-      </div>
+   <aside className="bg-white text-gray-800 border-r border-gray-200 h-full shadow-lg">
+  
 
-      <nav className="p-4">
-        <ul className="space-y-1">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <Link
-                to={item.path}
-                className=" flex items-center px-4 py-3 rounded-lg hover:bg-background transition-colors group">
-                <span className="mr-3 text-lg">
-                  {item.icon}
-                </span>
-                <span className="group-hover:text-primary">
-                  {item.name}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </aside>
+  <nav className="p-4">
+    <ul className="space-y-2">
+      {navItems.map((item) => (
+        <li key={item.id}>
+          <Link
+            to={item.path}
+            className="flex items-center px-4 py-3 rounded-xl hover:bg-gray-100 transition-colors duration-200 group hover:shadow-sm">
+            <span className="mr-3 text-xl text-gray-500 group-hover:text-blue-600 transition-colors duration-200">
+              {item.icon}
+            </span>
+            <span className="font-medium group-hover:text-blue-600 transition-colors duration-200">
+              {item.name}
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
   );
 };
 

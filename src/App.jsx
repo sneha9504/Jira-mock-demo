@@ -13,11 +13,12 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import ProjectDetails from "./components/dashboard/ProjectDetails";
 import NotificationModal from "./components/UI/Notificationmodal";
 
+
 const App = () => {
   return (
     <div className="relative">
-      <NotificationModal />
-      <CustomCursor />
+       <NotificationModal />
+    
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AuthPage />} />

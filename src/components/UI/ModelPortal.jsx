@@ -26,81 +26,92 @@ const ModelPortal = ({ onClose }) => {
   const type = watch("type", "");
 
   // Dynamic URL based on form fields
-  const dynamicUrl = `/project/${type || "type"}/${
-    name || "name"
-  }`;
+  const dynamicUrl = `/project/${type || "type"}/${name || "name"}`;
 
   // Fetch userID from localStorage
-  const userObj = JSON.parse(
-    localStorage.getItem("user") || "{}"
-  );
+  const userObj = JSON.parse(localStorage.getItem("user") || "{}");
   const userId = userObj.id || "";
 
   // Handle save to localStorage
   const onSubmit = (data) => {
     // Read previous projectData
-    const prevData = JSON.parse(
-      localStorage.getItem("projectData") || "[]"
-    );
+    const prevData = JSON.parse(localStorage.getItem("projectData") || "[]");
     const newEntry = {
       ...data,
       userId,
       createdAt: new Date().toISOString(),
     };
-    localStorage.setItem(
-      "projectData",
-      JSON.stringify([...prevData, newEntry])
-    );
+
+    // Save updated data in localStorage
+    localStorage.setItem("projectData", JSON.stringify([...prevData, newEntry]));
+
     onClose();
+
+    // ✅ Refresh page after saving
+    setTimeout(() => {
+      window.location.reload();
+    }, 300); // Small delay for smooth close
   };
 
   return ReactDOM.createPortal(
     <div
-      className="bg-black/50 p-4 flex flex-col justify-center items-center border-2 border-gray-50 fixed top-0 left-0 w-full h-full"
-      onClick={(e) => e.stopPropagation()}>
+      className="bg-black/60 fixed inset-0 z-50 flex items-center justify-center p-4"
+      onClick={(e) => e.stopPropagation()}
+    >
       <form
-        className="bg-white p-6 rounded shadow-md flex flex-col gap-4"
-        onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Project Name:
+        className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full flex flex-col gap-6 border border-gray-200 dark:border-gray-700"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {/* Project Name */}
+        <label className="flex flex-col gap-1">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Project Name:
+          </span>
           <input
             {...register("name")}
-            className="border p-2 w-full"
+            className="border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
           />
           {errors.name && (
-            <span className="text-red-500">
+            <span className="text-red-500 text-sm mt-1">
               {errors.name.message}
             </span>
           )}
         </label>
 
-        <label>
-          Project Type:
+        {/* Project Type */}
+        <label className="flex flex-col gap-1">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            Project Type:
+          </span>
           <input
             {...register("type")}
-            className="border p-2 w-full"
+            className="border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
           />
           {errors.type && (
-            <span className="text-red-500">
+            <span className="text-red-500 text-sm mt-1">
               {errors.type.message}
             </span>
           )}
         </label>
 
-        <div className="text-sm mt-2">
+        {/* Dynamic URL */}
+        <div className="text-sm text-gray-600 dark:text-gray-400">
           <strong>Dynamic URL: </strong>
           {dynamicUrl}
         </div>
 
+        {/* Buttons */}
         <button
           type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded">
+          className="bg-blue-600 text-white py-2 px-4 rounded-md shadow hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
           Save
         </button>
         <button
           type="button"
-          className="text-white bg-gray-800 mt-2"
-          onClick={onClose}>
+          className="bg-gray-500 dark:bg-gray-600 text-white py-2 px-4 rounded-md shadow hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+          onClick={onClose}
+        >
           Close
         </button>
       </form>

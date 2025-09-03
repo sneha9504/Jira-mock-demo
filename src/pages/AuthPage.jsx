@@ -33,50 +33,54 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-      {/* Left half: Image container */}
-      <div className="w-1/2 h-full bg-cover bg-center">
-        {/* Optional: Add text or content here if needed */}
-        {/* fix the image later */}
-        <img
-          src={Loginbanner}
-          alt="Kanban"
-          className="w-full h-full object-cover mix-blend-multiply"
-        />
+   <div className="flex h-screen w-full overflow-hidden">
+  {/* Left half: Image container */}
+  <div className="w-1/2 h-full relative overflow-hidden">
+    <img
+      src={Loginbanner}
+      alt="Kanban"
+      className="w-full h-full object-cover filter brightness-75"
+    />
+    
+  </div>
+
+  {/* Right half: Forms container with perspective for 3D */}
+  <div
+    className="relative w-1/2 h-full bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center"
+    style={{ perspective: '2000px' }}
+  >
+    {/* Flip card container */}
+    <div
+      ref={cardRef}
+      className="relative w-4/5 max-w-lg h-3/4 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-2xl shadow-blue-500/30 dark:shadow-blue-800/30 transition-transform duration-700"
+      style={{
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      {/* Front side (Login form) */}
+      <div
+        className="absolute inset-0 bg-white dark:bg-gray-800 shadow-xl flex items-center justify-center rounded-2xl p-8"
+        style={{
+          backfaceVisibility: 'hidden',
+        }}
+      >
+        <LoginForm switchToSignup={switchToSignup} />
       </div>
 
-      {/* Right half: Forms container with perspective for 3D */}
+      {/* Back side (Signup form, rotated 180deg initially) */}
       <div
-        className="relative w-1/2 h-full bg-surface flex items-center justify-center"
-        style={{ perspective: 2000 }}>
-        {/* Flip card container */}
-        <div
-          ref={cardRef}
-          className="relative w-3/5 h-3/5 border border-gray-600 rounded-lg shadow-lg shadow-primary/40 "
-          style={{
-            transformStyle: "preserve-3d",
-          }}>
-          {/* Front side (Login form) */}
-          <div
-            className="absolute inset-0 bg-surface shadow-xl flex items-center justify-center rounded-lg "
-            style={{
-              backfaceVisibility: "hidden",
-            }}>
-            <LoginForm switchToSignup={switchToSignup} />
-          </div>
-
-          {/* Back side (Signup form, rotated 180deg initially) */}
-          <div
-            className="absolute inset-0 bg-surface shadow-xl flex items-center justify-center rounded-lg"
-            style={{
-              backfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-            }}>
-            <SignupForm switchToLogin={switchToLogin} />
-          </div>
-        </div>
+        className="absolute inset-0 bg-white dark:bg-gray-800 shadow-xl flex items-center justify-center rounded-2xl p-8"
+        style={{
+          backfaceVisibility: 'hidden',
+          transform: 'rotateY(180deg)',
+        }}
+      >
+        <SignupForm switchToLogin={switchToLogin} />
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 

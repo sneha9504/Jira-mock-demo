@@ -5,40 +5,31 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm(
-      "Are you sure you want to log out?"
-    );
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       localStorage.removeItem("isAuthenticated");
-      //  user data to store and remove it from here
       localStorage.removeItem("user");
       navigate("/", { replace: true });
     }
   };
 
   return (
-    <header className="bg-surface text-text border-b border-border px-6 py-4">
-      <div className=" flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold">
-            Welcome To Jira Dashboard
-          </h1>
-        </div>
-
+    <header className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 px-6 py-4 shadow-md">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">
+          Welcome To Jira Dashboard
+        </h1>
         <nav className="flex items-center space-x-4">
-          <select className="bg-transparent border border-border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
-            <option value="">
-              {
-                JSON.parse(localStorage.getItem("user"))
-                  .username
-              }
-            </option>
-            <option value="profile">Profile</option>
-          </select>
+          {/* Username */}
+          <div className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400">
+            {JSON.parse(localStorage.getItem("user"))?.username}
+          </div>
 
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="bg-surface border border-border cursor-pointer text-text px-4 py-1.5 rounded text-sm hover:bg-secoundary transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+            className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+          >
             Logout
           </button>
         </nav>
