@@ -40,7 +40,7 @@ const Login = ({ switchToSignup }) => {
       );
 
       if (user) {
-      console.log("Login successful:", user);
+      
         localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("user", JSON.stringify(user));
         navigate("/Dashboard", { replace: true });
