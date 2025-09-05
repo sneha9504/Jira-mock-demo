@@ -50,9 +50,7 @@ const ModelPortal = ({ onClose }) => {
     onClose();
 
    
-    setTimeout(() => {
-      navigate("/dashboard/overview"); 
-    }, 300);
+ navigate("/dashboard/overview", { replace: true });
   };
 
   return ReactDOM.createPortal(
