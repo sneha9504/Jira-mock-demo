@@ -49,10 +49,10 @@ const ModelPortal = ({ onClose }) => {
 
     onClose();
 
-    // ✅ Refresh page after saving
+   
     setTimeout(() => {
-      navigate(0); // Navigate to same page
-    }, 300);// Small delay for smooth close
+      navigate("/dashboard/overview"); 
+    }, 300);
   };
 
   return ReactDOM.createPortal(
