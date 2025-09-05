@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
-import CustomCursor from "./components/UI/CustomCursor";
+
 import Summary from "./components/dashboard/Summary";
 import ProjectOverview from "./components/dashboard/ProjectOverview";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";

@@ -31,12 +31,19 @@ const SignupForm = ({ switchToLogin }) => {
 
   const onSubmit = (data) => {
     const uniqueId = new Date();
-    const userDetails = {
-      ...data,
+
+    // ✅ Always fetch fresh user data
+    const getUserData = JSON.parse(localStorage.getItem("userData")) || [];
+
+    // ✅ Remove confirmPassword before saving
+    const { confirmPassword, ...userDetails } = data;
+
+    const newUser = {
+      ...userDetails,
       id: uniqueId.getTime(),
     };
 
-    // ✅ Check if user exists
+    // ✅ Check if user already exists (username OR email)
     if (
       getUserData.some(
         (u) => u.username === data.username || u.email === data.email
@@ -46,26 +53,27 @@ const SignupForm = ({ switchToLogin }) => {
       return;
     }
 
-    // ✅ Add new user and store
-    getUserData.push(userDetails);
-    showNotification("Signup successful! Please login.", "success");
-    localStorage.setItem("userData", JSON.stringify(getUserData));
+    // ✅ Add new user and update localStorage
+    const updatedUsers = [...getUserData, newUser];
+    localStorage.setItem("userData", JSON.stringify(updatedUsers));
 
-    // ✅ Show success notification
-    
+    // ✅ Success notification
+    showNotification("Signup successful! Please login.", "success");
   };
 
+
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-      <h2 className="text-4xl font-light mb-10 text-blue-600 dark:text-blue-400 tracking-wide">
+    <div className="flex flex-col items-center justify-center w-full min-h rounded-2xl p-4 sm:p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
+      <h2 className="text-2xl sm:text-4xl font-light mb-6 sm:mb-10 text-blue-600 dark:text-blue-400 tracking-wide">
         Sign Up
       </h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
+        className="w-full max-w-md bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700"
       >
         {/* Username */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <input
             {...register("username")}
             placeholder="Username"
@@ -77,7 +85,7 @@ const SignupForm = ({ switchToLogin }) => {
         </div>
 
         {/* Email */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <input
             {...register("email")}
             placeholder="Email"
@@ -89,7 +97,7 @@ const SignupForm = ({ switchToLogin }) => {
         </div>
 
         {/* Password */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <input
             type="password"
             autoComplete="new-password"
@@ -103,7 +111,7 @@ const SignupForm = ({ switchToLogin }) => {
         </div>
 
         {/* Confirm Password */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <input
             type="password"
             autoComplete="new-password"
@@ -123,19 +131,20 @@ const SignupForm = ({ switchToLogin }) => {
           <button
             type="button"
             onClick={switchToLogin}
-            className="px-5 py-2.5 text-blue-600 dark:text-blue-400 bg-transparent border border-blue-600 dark:border-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-4 sm:px-5 py-2 text-blue-600 dark:text-blue-400 bg-transparent border border-blue-600 dark:border-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Login
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-4 sm:px-5 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Sign Up
           </button>
         </div>
       </form>
     </div>
+
   );
 };
 

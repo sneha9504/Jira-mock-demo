@@ -23,48 +23,48 @@ const ProjectModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   return ReactDOM.createPortal(
-<div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center">
-  <div className="bg-white dark:bg-gray-800 rounded-xl p-8 w-full max-w-md relative shadow-2xl border border-gray-200 dark:border-gray-700">
+<div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-center items-center p-2 sm:p-0">
+  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-8 w-full max-w-md relative shadow-2xl border border-gray-200 dark:border-gray-700 overflow-y-auto">
     <button
-      className="absolute top-3 right-4 text-2xl font-bold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
+      className="absolute top-2 sm:top-3 right-3 sm:right-4 text-xl sm:text-2xl font-bold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200"
       onClick={onClose}
     >
       &times;
     </button>
 
-    <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100 tracking-tight">Create Project</h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 dark:text-gray-100 tracking-tight">Create Project</h2>
 
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       <div>
-        <label className="block mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-sm">Project Name</label>
+        <label className="block mb-1 sm:mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-xs sm:text-sm">Project Name</label>
         <input
           type="text"
           name="name"
           value={project.name}
           onChange={handleChange}
           required
-          className="w-full border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
+          className="w-full border border-gray-300 dark:border-gray-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
         />
       </div>
 
       <div>
-        <label className="block mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-sm">Description</label>
+        <label className="block mb-1 sm:mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-xs sm:text-sm">Description</label>
         <textarea
           name="description"
           value={project.description}
           onChange={handleChange}
           required
-          className="w-full border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200 resize-y min-h-[100px]"
+          className="w-full border border-gray-300 dark:border-gray-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200 resize-y min-h-[80px] sm:min-h-[100px]"
         />
       </div>
 
       <div>
-        <label className="block mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-sm">Status</label>
+        <label className="block mb-1 sm:mb-1.5 font-medium text-gray-700 dark:text-gray-300 text-xs sm:text-sm">Status</label>
         <select
           name="status"
           value={project.status}
           onChange={handleChange}
-          className="w-full border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
+          className="w-full border border-gray-300 dark:border-gray-600 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-shadow duration-200"
         >
           <option>Pending</option>
           <option>In Progress</option>
@@ -74,13 +74,14 @@ const ProjectModal = ({ isOpen, onClose, onSubmit }) => {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2.5 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="w-full bg-blue-600 text-white py-2 sm:py-2.5 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
         Create
       </button>
     </form>
   </div>
-</div>,
+</div>
+,
 document.getElementById("modal-root")
 
     

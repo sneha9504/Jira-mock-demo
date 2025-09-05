@@ -227,11 +227,11 @@ const ProjectDetails = () => {
   };
 
   return (
-  <div className="p-8 space-y-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen overflow-hidden">
+ <div className="p-4 sm:p-8 space-y-6 sm:space-y-8 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen overflow-hidden">
   {/* Header */}
-  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white shadow-xl rounded-2xl p-6 border border-gray-200">
+  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between bg-white shadow-xl rounded-2xl p-4 sm:p-6 border border-gray-200">
     <div className="space-y-2">
-      <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+      <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
         Project Title: {project.name || "Project"}
       </h1>
     </div>
@@ -239,7 +239,7 @@ const ProjectDetails = () => {
     <div className="flex flex-wrap gap-4">
       <button
         disabled={!canManageColumns}
-        className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs sm:text-sm font-semibold shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         onClick={handleAddColumn}
         title={canManageColumns ? "Add a new column" : "Only admins can add columns"}
       >
@@ -249,7 +249,7 @@ const ProjectDetails = () => {
   </div>
 
   {/* Kanban Board with Horizontal Scrollbar */}
-  <div className="overflow-x-auto scrollbar scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-100 dark:scrollbar-thumb-indigo-300 dark:scrollbar-track-indigo-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-6 bg-white dark:bg-gray-800 transition-all duration-300 hover:shadow-indigo-500/20">
+  <div className="overflow-x-auto scrollbar scrollbar-thin scrollbar-thumb-indigo-500 scrollbar-track-indigo-100 dark:scrollbar-thumb-indigo-300 dark:scrollbar-track-indigo-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 bg-white dark:bg-gray-800 transition-all duration-300 hover:shadow-indigo-500/20">
     <KanbanBoard
       tasks={tasks}
       statuses={columns}
