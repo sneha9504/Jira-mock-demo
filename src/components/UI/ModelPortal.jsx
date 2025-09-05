@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import useNotificationStore from "../../store/notificationStore";
 
 // Schema for validation
 const schema = yup.object().shape({
@@ -12,6 +13,7 @@ const schema = yup.object().shape({
 });
 
 const ModelPortal = ({ onClose }) => {
+  const { showNotification } = useNotificationStore();
   const navigate = useNavigate();
   // Hook-form setup
   const {
@@ -46,11 +48,13 @@ const ModelPortal = ({ onClose }) => {
 
     // Save updated data in localStorage
     localStorage.setItem("projectData", JSON.stringify([...prevData, newEntry]));
-
+      window.dispatchEvent(new Event("storage-update"));
+    showNotification("Project saved successfully!", "success");
+    setTimeout(() => navigate("/dashboard/overview", { replace: true }), 300);
     onClose();
 
-   
- navigate("/dashboard/overview", { replace: true });
+
+    
   };
 
   return ReactDOM.createPortal(

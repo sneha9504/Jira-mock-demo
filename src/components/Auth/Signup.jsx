@@ -48,10 +48,11 @@ const SignupForm = ({ switchToLogin }) => {
 
     // ✅ Add new user and store
     getUserData.push(userDetails);
+    showNotification("Signup successful! Please login.", "success");
     localStorage.setItem("userData", JSON.stringify(getUserData));
 
     // ✅ Show success notification
-    showNotification("Signup successful! Please login.", "success");
+    
   };
 
   return (

@@ -22,7 +22,7 @@ const NotificationModal = () => {
   };
 
   return (
-    <div className={`fixed top-5 right-5 px-6 py-3 rounded shadow-lg text-white ${typeStyle[type] || 'bg-blue-500'}`}>
+    <div className={`fixed top-20 right-5 px-6 py-3 rounded shadow-lg text-white ${typeStyle[type] || 'bg-blue-500'}`}>
       {message}
     </div>
   );
