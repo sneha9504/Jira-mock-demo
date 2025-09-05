@@ -17,7 +17,7 @@ import NotificationModal from "./components/UI/Notificationmodal";
 const App = () => {
   return (
     <div className="relative">
-       <NotificationModal />
+       
     
       <BrowserRouter>
         <Routes>
@@ -41,6 +41,7 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
+      <NotificationModal />
     </div>
   );
 };

@@ -1,15 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/img/jira.jpeg'
+import useNotificationStore from "../../store/notificationStore";
 
 const Header = () => {
   const navigate = useNavigate();
-
+  const { showNotification } = useNotificationStore();
   const handleLogout = () => {
+
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       localStorage.removeItem("isAuthenticated");
       localStorage.removeItem("user");
+      showNotification("Logged out successfully!", "success");
       navigate("/", { replace: true });
     }
   };

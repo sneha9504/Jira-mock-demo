@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import KanbanBoard from "../tasks/KanbanBoard";
+import useNotificationStore from "../../store/notificationStore";
 
 const toKey = (label) => {
   const base = String(label || "")
@@ -15,6 +16,7 @@ const toKey = (label) => {
 };
 
 const ProjectDetails = () => {
+  const {showNotification} = useNotificationStore();
   const { id } = useParams();
 
   const [tasks, setTasks] = useState([]);
@@ -90,6 +92,7 @@ const ProjectDetails = () => {
     const updated = [...tasks, newTask];
     setTasks(updated);
     localStorage.setItem(`tasks-${id}`, JSON.stringify(updated));
+    showNotification("Task added successfully!", "success"); 
   };
 
   const onUpdateTask = (updatedTask) => {
@@ -131,7 +134,7 @@ const ProjectDetails = () => {
       (col) => col.name.toLowerCase() === trimmedName.toLowerCase()
     );
     if (isDuplicate) {
-      alert("A column with this name already exists!");
+      showNotification("Column name already exists!", "error");
       return;
     }
 
@@ -148,11 +151,13 @@ const ProjectDetails = () => {
     const updatedProject = { ...project, columns: nextCols };
     setProject(updatedProject);
     persistProject(updatedProject);
+    showNotification("Column added successfully!", "success");
   };
   const handleDeleteTask = (taskId) => {
     const updatedTasks = tasks.filter((t) => t.id !== taskId);
     setTasks(updatedTasks);
     localStorage.setItem(`tasks-${id}`, JSON.stringify(updatedTasks));
+    showNotification("Task deleted successfully!", "success");
   };
 
   // Rename Column
@@ -224,6 +229,7 @@ const ProjectDetails = () => {
         )
       )
     );
+    showNotification("Column and its tasks deleted successfully!", "success");
   };
 
   return (

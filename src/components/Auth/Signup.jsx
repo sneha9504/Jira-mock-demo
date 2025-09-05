@@ -49,6 +49,7 @@ const SignupForm = ({ switchToLogin }) => {
         (u) => u.username === data.username || u.email === data.email
       )
     ) {
+      
       showNotification("User already exists!", "error");
       return;
     }
@@ -56,7 +57,7 @@ const SignupForm = ({ switchToLogin }) => {
     // ✅ Add new user and update localStorage
     const updatedUsers = [...getUserData, newUser];
     localStorage.setItem("userData", JSON.stringify(updatedUsers));
-
+    
     // ✅ Success notification
     showNotification("Signup successful! Please login.", "success");
   };
